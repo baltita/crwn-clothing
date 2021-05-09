@@ -1,6 +1,5 @@
 import React from "react";
-import './header.styles.scss'
-import {Link} from 'react-router-dom'
+import {HeaderContainer, LogoContainer, OptionLink, Options, OptionsContainer, UserEmail} from "./header.styles";
 import {ReactComponent as Logo} from "../../assets/crown.svg";
 import {auth} from '../../firebase/firebase.utils'
 import {connect} from "react-redux";
@@ -11,30 +10,30 @@ import {selectCartHidden} from "../../redux/cart/cart.selectors";
 import {createStructuredSelector} from "reselect";
 
 const Header = ({currentUser, cartHidden}) => (
-    <div className='header'>
-        <Link className="logo-container" to='/'>
+    <HeaderContainer>
+        <LogoContainer to='/'>
             <Logo className="logo"/>
-        </Link>
-        <div className='options-container'>
-            <div className="options">
-                <Link to="/shop" className="option">SHOP</Link>
-                <Link to="/shop" className="option">CONTACT</Link>
+        </LogoContainer>
+        <OptionsContainer>
+            <Options>
+                <OptionLink to="/shop">SHOP</OptionLink>
+                <OptionLink to="/shop">CONTACT</OptionLink>
                 {
                     currentUser ?
-                        <div className='option' onClick={() => auth.signOut()}>SIGN OUT</div>
-                        : <Link to="/signin" className="option">SIGN IN</Link>
+                        <OptionLink as='div' onClick={() => auth.signOut()}>SIGN OUT</OptionLink>
+                        : <OptionLink to="/signin">SIGN IN</OptionLink>
                 }
                 <CartIcon/>
-            </div>
+            </Options>
             {
                 currentUser ?
-                    <div className='user-email'>{currentUser.email}</div>
+                    <UserEmail>{currentUser.email}</UserEmail>
                     : ''
             }
             {cartHidden ? null : <CartDropdown/>}
-        </div>
+        </OptionsContainer>
 
-    </div>
+    </HeaderContainer>
 )
 
 const mapStateToProps = createStructuredSelector ({
